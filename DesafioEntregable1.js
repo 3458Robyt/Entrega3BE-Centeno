@@ -4,19 +4,28 @@ class ProductManager {
     this.productIdCounter = 1; // Para generar IDs autoincrementables
   }
 
-  addProduct(product) {
-    if (!this.isProductValid(product)) {
+  addProduct(title, description, price, thumbnail, code, stock) {
+    let newProduct = {
+      title,
+      description,
+      price,
+      thumbnail,
+      code,
+      stock
+    };
+
+    if (!this.isProductValid(newProduct)) {
       console.log("Error: Product data is invalid.");
       return;
     }
 
-    if (this.isCodeTaken(product.code)) {
+    if (this.isCodeTaken(code)) {
       console.log("Error: Product code is already taken.");
       return;
     }
 
-    product.id = this.productIdCounter++;
-    this.products.push(product);
+    newProduct.id = this.productIdCounter++;
+    this.products.push(newProduct);
     console.log("Product added successfully.");
   }
 
@@ -25,12 +34,13 @@ class ProductManager {
   }
 
   getProductById(id) {
-    const product = this.products.find(product => product.id === id);
-    if (product) {
-      return product;
-    } else {
+    let indexproduct = this.products.findIndex(product => product.id === id);
+    if (indexproduct==-1) {
       console.log("Error: Product not found.");
-    }
+      return
+    } 
+      return this.products[indexproduct];
+    
   }
 
   isProductValid(product) {
@@ -49,26 +59,33 @@ class ProductManager {
   }
 }
 
-// Ejemplo de uso y testeo
-const productManager = new ProductManager();
+
+
+//Testeo
+let productManager = new ProductManager();
 
 console.log(productManager.getProducts()); // []
 
-const productToAdd = {
-  title: "producto prueba",
-  description: "Este es un producto prueba",
-  price: 200,
-  thumbnail: "Sin imagen",
-  code: "abc123",
-  stock: 25
-};
-
-productManager.addProduct(productToAdd); // Agrega el producto sin problemas
+productManager.addProduct(
+  "producto prueba",
+  "Este es un producto prueba",
+  200,
+  "Sin imagen",
+  "abc123",
+  25
+); 
 
 console.log(productManager.getProducts()); // Muestra el producto recién agregado
 
 // Intento de agregar un producto con el mismo código, debe arrojar un error
-productManager.addProduct(productToAdd);
+productManager.addProduct(
+  "producto repetido",
+  "Este es un producto repetido",
+  150,
+  "Sin imagen",
+  "abc123",
+  20
+);
 
-console.log(productManager.getProductById(1)); // Muestra el producto con ID 1
-console.log(productManager.getProductById(3)); // Debe mostrar un error "Product not found"
+console.log(productManager.getProductById(1));
+// console.log(productManager.getProductById(2));
