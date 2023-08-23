@@ -136,4 +136,5 @@ console.log(productManager.getProductById(1)); // Debe mostrar el producto actua
 console.log(productManager.getProducts()); // Debe mostrar un arreglo vacío
 
 // productManager.deleteProduct(2); // Debe mostrar un error "Product not found"
+module.exports = ProductManager;
 
